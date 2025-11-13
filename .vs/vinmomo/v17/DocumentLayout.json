@@ -1,0 +1,68 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\belarbi\\source\\repos\\vinmomo\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{DBA6AFE7-2AFB-411F-B311-4BD4E4C2E055}|vinmomo\\vinmomo.csproj|c:\\users\\belarbi\\source\\repos\\vinmomo\\vinmomo\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{DBA6AFE7-2AFB-411F-B311-4BD4E4C2E055}|vinmomo\\vinmomo.csproj|solutionrelative:vinmomo\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DBA6AFE7-2AFB-411F-B311-4BD4E4C2E055}|vinmomo\\vinmomo.csproj|c:\\users\\belarbi\\source\\repos\\vinmomo\\vinmomo\\adminwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{DBA6AFE7-2AFB-411F-B311-4BD4E4C2E055}|vinmomo\\vinmomo.csproj|solutionrelative:vinmomo\\adminwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DBA6AFE7-2AFB-411F-B311-4BD4E4C2E055}|vinmomo\\vinmomo.csproj|c:\\users\\belarbi\\source\\repos\\vinmomo\\vinmomo\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{DBA6AFE7-2AFB-411F-B311-4BD4E4C2E055}|vinmomo\\vinmomo.csproj|solutionrelative:vinmomo\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\belarbi\\source\\repos\\vinmomo\\vinmomo\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "vinmomo\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\belarbi\\source\\repos\\vinmomo\\vinmomo\\MainWindow.xaml",
+              "RelativeToolTip": "vinmomo\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-11-13T08:42:55.202Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AdminWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\belarbi\\source\\repos\\vinmomo\\vinmomo\\AdminWindow.xaml",
+              "RelativeDocumentMoniker": "vinmomo\\AdminWindow.xaml",
+              "ToolTip": "C:\\Users\\belarbi\\source\\repos\\vinmomo\\vinmomo\\AdminWindow.xaml",
+              "RelativeToolTip": "vinmomo\\AdminWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-11-13T08:42:27.35Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "App.xaml",
+              "DocumentMoniker": "C:\\Users\\belarbi\\source\\repos\\vinmomo\\vinmomo\\App.xaml",
+              "RelativeDocumentMoniker": "vinmomo\\App.xaml",
+              "ToolTip": "C:\\Users\\belarbi\\source\\repos\\vinmomo\\vinmomo\\App.xaml",
+              "RelativeToolTip": "vinmomo\\App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-11-13T08:42:14.229Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
