@@ -15,9 +15,31 @@ namespace vinmomo.Services
             _httpClient = ApiClient.HttpClient;
         }
 
-        public async Task<List<Service>> GetServicesAsync()
+        // Récupérer tous les services
+        public Task<List<Service>> GetServicesAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<Service>>("Service");
+            return _httpClient.GetFromJsonAsync<List<Service>>("Service");
+        }
+
+        // Ajouter un service
+        public async Task AddServiceAsync(Service service)
+        {
+            var response = await _httpClient.PostAsJsonAsync("Service", service);
+            response.EnsureSuccessStatusCode();
+        }
+
+        // Mettre à jour un service
+        public async Task UpdateServiceAsync(Service service)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"Service/{service.Id}", service);
+            response.EnsureSuccessStatusCode();
+        }
+
+        // Supprimer un service
+        public async Task DeleteServiceAsync(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"Service/{id}");
+            response.EnsureSuccessStatusCode();
         }
     }
 }

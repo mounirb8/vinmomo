@@ -8,16 +8,32 @@ namespace vinmomo.Services
 {
     public class ApiSiteService
     {
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient _http;
 
         public ApiSiteService()
         {
-            _httpClient = ApiClient.HttpClient;
+            _http = ApiClient.HttpClient;
         }
 
-        public async Task<List<Site>> GetSitesAsync()
+        public Task<List<Site>> GetSitesAsync()
+            => _http.GetFromJsonAsync<List<Site>>("Site");
+
+        public async Task AddSiteAsync(Site site)
         {
-            return await _httpClient.GetFromJsonAsync<List<Site>>("Site");
+            var res = await _http.PostAsJsonAsync("Site", site);
+            res.EnsureSuccessStatusCode();
+        }
+
+        public async Task UpdateSiteAsync(int id, Site site)
+        {
+            var res = await _http.PutAsJsonAsync($"Site/{id}", site);
+            res.EnsureSuccessStatusCode();
+        }
+
+        public async Task DeleteSiteAsync(int id)
+        {
+            var res = await _http.DeleteAsync($"Site/{id}");
+            res.EnsureSuccessStatusCode();
         }
     }
 }

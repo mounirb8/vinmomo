@@ -1,0 +1,63 @@
+﻿<Window x:Class="vinmomo.SalarieDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Salarié"
+        Height="320" Width="420"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Nom :" Margin="0 3" VerticalAlignment="Center"/>
+            <TextBox x:Name="TxtNom" Grid.Row="0" Grid.Column="1" Margin="5 3"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Prénom :" Margin="0 3" VerticalAlignment="Center"/>
+            <TextBox x:Name="TxtPrenom" Grid.Row="1" Grid.Column="1" Margin="5 3"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Téléphone fixe :" Margin="0 3" VerticalAlignment="Center"/>
+            <TextBox x:Name="TxtTelFixe" Grid.Row="2" Grid.Column="1" Margin="5 3"/>
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Téléphone portable :" Margin="0 3" VerticalAlignment="Center"/>
+            <TextBox x:Name="TxtTelPort" Grid.Row="3" Grid.Column="1" Margin="5 3"/>
+
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Email :" Margin="0 3" VerticalAlignment="Center"/>
+            <TextBox x:Name="TxtEmail" Grid.Row="4" Grid.Column="1" Margin="5 3"/>
+
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Service :" Margin="0 3" VerticalAlignment="Center"/>
+            <ComboBox x:Name="CmbService" Grid.Row="5" Grid.Column="1"
+                      Margin="5 3"
+                      DisplayMemberPath="Nom"/>
+
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="Site :" Margin="0 3" VerticalAlignment="Center"/>
+            <ComboBox x:Name="CmbSite" Grid.Row="6" Grid.Column="1"
+                      Margin="5 3"
+                      DisplayMemberPath="Ville"/>
+        </Grid>
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0 15 0 0">
+            <Button Content="OK" Width="80" Margin="0 0 10 0" Click="BtnOk_Click"/>
+            <Button Content="Annuler" Width="80" Click="BtnCancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,4 +1,3 @@
-
 namespace vinmomo.Models
 {
     public class Site

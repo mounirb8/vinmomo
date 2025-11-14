@@ -1,76 +1,62 @@
-
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
-using Microsoft.VisualBasic;
-using vinmomo.Data;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using vinmomo.Models;
+using vinmomo.Services;
 
 namespace vinmomo.ViewModels
 {
-    public class AdminServicesViewModel : ViewModelBase
+    public class AdminServicesViewModel : INotifyPropertyChanged
     {
-        private readonly AnnuaireContext _context = new AnnuaireContext();
-        private ObservableCollection<Service> _services;
+        private readonly ApiServiceService _api = new();
 
-        public ObservableCollection<Service> Services
+        public ObservableCollection<Service> Services { get; } = new();
+
+        private Service _selectedService;
+        public Service SelectedService
         {
-            get { return _services; }
-            set { _services = value; OnPropertyChanged(); }
-        }
-
-        public ICommand AddServiceCommand { get; }
-        public ICommand UpdateServiceCommand { get; }
-        public ICommand DeleteServiceCommand { get; }
-
-        public AdminServicesViewModel()
-        {
-            Services = new ObservableCollection<Service>(_context.Services.ToList());
-            AddServiceCommand = new RelayCommand(AddService);
-            UpdateServiceCommand = new RelayCommand(UpdateService, CanUpdateOrDeleteService);
-            DeleteServiceCommand = new RelayCommand(DeleteService, CanUpdateOrDeleteService);
-        }
-
-        private void AddService(object obj)
-        {
-            var newServiceName = Microsoft.VisualBasic.Interaction.InputBox("Enter new service name:", "Add Service", "");
-            if (!string.IsNullOrWhiteSpace(newServiceName))
+            get => _selectedService;
+            set
             {
-                var newService = new Service { Nom = newServiceName };
-                _context.Services.Add(newService);
-                _context.SaveChanges();
-                Services.Add(newService);
+                _selectedService = value;
+                OnPropertyChanged();
             }
         }
 
-        private void UpdateService(object obj)
+        // Chargement de la liste
+        public async Task LoadAsync()
         {
-            if (obj is Service service)
+            Services.Clear();
+            var list = await _api.GetServicesAsync();
+            foreach (var s in list)
             {
-                var updatedServiceName = Microsoft.VisualBasic.Interaction.InputBox("Enter updated service name:", "Update Service", service.Nom);
-                if (!string.IsNullOrWhiteSpace(updatedServiceName))
-                {
-                    service.Nom = updatedServiceName;
-                    _context.Services.Update(service);
-                    _context.SaveChanges();
-                    Services = new ObservableCollection<Service>(_context.Services.ToList()); // Refresh
-                }
+                Services.Add(s);
             }
         }
 
-        private void DeleteService(object obj)
+        // Création
+        public Task AddAsync(Service service)
         {
-            if (obj is Service service)
-            {
-                _context.Services.Remove(service);
-                _context.SaveChanges();
-                Services.Remove(service);
-            }
+            return _api.AddServiceAsync(service);
         }
 
-        private bool CanUpdateOrDeleteService(object obj)
+        // Mise à jour
+        public Task UpdateAsync(Service service)
         {
-            return obj is Service;
+            return _api.UpdateServiceAsync(service);
+        }
+
+        // Suppression
+        public Task DeleteAsync(int id)
+        {
+            return _api.DeleteServiceAsync(id);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

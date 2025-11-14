@@ -1,7 +1,9 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using vinmomo.Models;
 using vinmomo.Services;
@@ -56,14 +58,26 @@ namespace vinmomo.ViewModels
             }
         }
 
+        private Salarie _selectedSalarie;
+        public Salarie SelectedSalarie
+        {
+            get => _selectedSalarie;
+            set
+            {
+                _selectedSalarie = value;
+                OnPropertyChanged();
+            }
+        }
+
         public MainViewModel()
         {
             SalariesView = CollectionViewSource.GetDefaultView(Salaries);
             SalariesView.Filter = FilterPredicate;
-            LoadDataAsync();
+
+            _ = LoadDataAsync();
         }
 
-        private async void LoadDataAsync()
+        public async Task LoadDataAsync()
         {
             try
             {
@@ -84,6 +98,9 @@ namespace vinmomo.ViewModels
                 var salaries = await _salarieService.GetSalariesAsync();
                 foreach (var s in salaries)
                     Salaries.Add(s);
+
+                SelectedSalarie = Salaries.FirstOrDefault();
+                SalariesView.Refresh();
             }
             catch (Exception ex)
             {
@@ -104,6 +121,30 @@ namespace vinmomo.ViewModels
             bool matchService = SelectedService == null || s.ServiceId == SelectedService.Id;
 
             return matchSearch && matchSite && matchService;
+        }
+
+        // ==============================
+        //  Méthodes CRUD appelées par MainWindow
+        // ==============================
+
+        public async Task AddSalarieAsync(Salarie salarie)
+        {
+            await _salarieService.AddSalarieAsync(salarie);
+            await LoadDataAsync();
+        }
+
+        public async Task UpdateSalarieAsync(Salarie salarie)
+        {
+            await _salarieService.UpdateSalarieAsync(salarie.Id, salarie);
+            await LoadDataAsync();
+        }
+
+        public async Task DeleteSelectedAsync()
+        {
+            if (SelectedSalarie == null) return;
+
+            await _salarieService.DeleteSalarieAsync(SelectedSalarie.Id);
+            await LoadDataAsync();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

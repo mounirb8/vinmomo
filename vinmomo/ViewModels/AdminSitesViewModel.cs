@@ -1,77 +1,56 @@
-
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
-using Microsoft.VisualBasic;
-using vinmomo.Data;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using vinmomo.Models;
+using vinmomo.Services;
 
 namespace vinmomo.ViewModels
 {
-    public class AdminSitesViewModel : ViewModelBase
+    public class AdminSitesViewModel : INotifyPropertyChanged
     {
-        private readonly AnnuaireContext _context = new AnnuaireContext();
-        private ObservableCollection<Site> _sites;
+        private readonly ApiSiteService _service = new();
 
-        public ObservableCollection<Site> Sites
+        public ObservableCollection<Site> Sites { get; } = new();
+
+        private Site _selectedSite;
+        public Site SelectedSite
         {
-            get { return _sites; }
-            set { _sites = value; OnPropertyChanged(); }
-        }
-
-        public ICommand AddSiteCommand { get; }
-        public ICommand UpdateSiteCommand { get; }
-        public ICommand DeleteSiteCommand { get; }
-
-        public AdminSitesViewModel()
-        {
-            Sites = new ObservableCollection<Site>(_context.Sites.ToList());
-            AddSiteCommand = new RelayCommand(AddSite);
-            UpdateSiteCommand = new RelayCommand(UpdateSite, CanUpdateOrDeleteSite);
-            DeleteSiteCommand = new RelayCommand(DeleteSite, CanUpdateOrDeleteSite);
-        }
-
-        private void AddSite(object obj)
-        {
-            // For simplicity, we'll use an input dialog. A dedicated view would be better.
-            var newSiteName = Microsoft.VisualBasic.Interaction.InputBox("Enter new site name:", "Add Site", "");
-            if (!string.IsNullOrWhiteSpace(newSiteName))
+            get => _selectedSite;
+            set
             {
-                var newSite = new Site { Ville = newSiteName };
-                _context.Sites.Add(newSite);
-                _context.SaveChanges();
-                Sites.Add(newSite);
+                _selectedSite = value;
+                OnPropertyChanged();
             }
         }
 
-        private void UpdateSite(object obj)
+        public async Task LoadAsync()
         {
-            if (obj is Site site)
-            {
-                var updatedSiteName = Microsoft.VisualBasic.Interaction.InputBox("Enter updated site name:", "Update Site", site.Ville);
-                if (!string.IsNullOrWhiteSpace(updatedSiteName))
-                {
-                    site.Ville = updatedSiteName;
-                    _context.Sites.Update(site);
-                    _context.SaveChanges();
-                    Sites = new ObservableCollection<Site>(_context.Sites.ToList()); // Refresh
-                }
-            }
+            Sites.Clear();
+            var list = await _service.GetSitesAsync();
+            foreach (var s in list)
+                Sites.Add(s);
         }
 
-        private void DeleteSite(object obj)
+        public async Task AddAsync(Site site)
         {
-            if (obj is Site site)
-            {
-                _context.Sites.Remove(site);
-                _context.SaveChanges();
-                Sites.Remove(site);
-            }
+            await _service.AddSiteAsync(site);
         }
 
-        private bool CanUpdateOrDeleteSite(object obj)
+        public async Task UpdateAsync(Site site)
         {
-            return obj is Site;
+            await _service.UpdateSiteAsync(site.Id, site);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            await _service.DeleteSiteAsync(id);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

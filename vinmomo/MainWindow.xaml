@@ -3,114 +3,146 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:vinmomo"
-        xmlns:viewModels="clr-namespace:vinmomo.ViewModels"
         mc:Ignorable="d"
         Title="Annuaire d'entreprise"
-        Height="650" Width="1000"
-        WindowStartupLocation="CenterScreen">
-
-    <Window.DataContext>
-        <viewModels:MainViewModel/>
-    </Window.DataContext>
+        Height="650" Width="1100"
+        KeyDown="Window_KeyDown">
 
     <Grid Margin="10">
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <!-- filtres -->
             <RowDefinition Height="*"/>
+            <!-- grille -->
+            <RowDefinition Height="Auto"/>
+            <!-- fiche salarié -->
+            <RowDefinition Height="Auto"/>
+            <!-- boutons -->
         </Grid.RowDefinitions>
 
-        <!-- ==================== BARRE DE RECHERCHE ==================== -->
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,0,10">
-            <TextBlock Text="Rechercher :" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <TextBox Width="200" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,20,0"/>
+        <!-- =======================  FILTRES ======================== -->
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0 0 0 10">
 
-            <TextBlock Text="Site :" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <ComboBox Width="150"
+            <TextBlock Text="Rechercher :" VerticalAlignment="Center"/>
+            <TextBox Width="200" Margin="5 0"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Text="Site :" Margin="20 0 0 0" VerticalAlignment="Center"/>
+            <ComboBox Width="150" Margin="5 0"
                       ItemsSource="{Binding Sites}"
                       SelectedItem="{Binding SelectedSite}"
-                      DisplayMemberPath="Ville"
-                      Margin="0,0,20,0"/>
+                      DisplayMemberPath="Ville"/>
 
-            <TextBlock Text="Service :" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <ComboBox Width="150"
+            <TextBlock Text="Service :" Margin="20 0 0 0" VerticalAlignment="Center"/>
+            <ComboBox Width="150" Margin="5 0"
                       ItemsSource="{Binding Services}"
                       SelectedItem="{Binding SelectedService}"
                       DisplayMemberPath="Nom"/>
         </StackPanel>
 
-        <!-- ==================== CONTENU PRINCIPAL ==================== -->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="2*"/>
-            </Grid.ColumnDefinitions>
+        <!-- =======================  TABLEAU SALARIÉS ======================== -->
+        <DataGrid x:Name="DataGridSalaries"
+                  Grid.Row="1"
+                  ItemsSource="{Binding SalariesView}"
+                  SelectedItem="{Binding SelectedSalarie, Mode=TwoWay}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  Height="400"
+                  Margin="0 0 10 10">
 
-            <!-- TABLEAU DES SALARIÉS -->
-            <DataGrid x:Name="SalariesGrid"
-                      ItemsSource="{Binding SalariesView}"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      SelectionMode="Single"
-                      SelectionUnit="FullRow"
-                      Margin="0,0,10,0"
-                      Grid.Column="0"
-                      RowHeight="30">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*"/>
-                    <DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}" Width="*"/>
-                    <DataGridTextColumn Header="Service" Binding="{Binding Service.Nom}" Width="*"/>
-                    <DataGridTextColumn Header="Site" Binding="{Binding Site.Ville}" Width="*"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Nom" Binding="{Binding Nom}"/>
+                <DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}"/>
+                <DataGridTextColumn Header="Service" Binding="{Binding Service.Nom}"/>
+                <DataGridTextColumn Header="Site" Binding="{Binding Site.Ville}"/>
+            </DataGrid.Columns>
 
-            <!-- FICHE DÉTAILLÉE DU SALARIÉ -->
-            <Border Grid.Column="1"
-                    BorderBrush="Gray"
-                    BorderThickness="1"
-                    CornerRadius="5"
-                    Padding="15"
-                    Background="#F9F9F9">
+        </DataGrid>
 
-                <StackPanel>
-                    <TextBlock Text="Fiche Salarié" FontWeight="Bold" FontSize="18" Margin="0,0,0,15" TextAlignment="Center"/>
+        <!-- =======================  FICHE SALARIÉ ======================== -->
+        <GroupBox Header="Fiche salarié"
+                  Grid.Row="2"
+                  Margin="0 0 10 10">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <TextBlock Text="Nom :" FontWeight="Bold" Width="130"/>
-                        <TextBlock Text="{Binding SelectedItem.Nom, ElementName=SalariesGrid}"/>
-                    </StackPanel>
+                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 2" Text="Nom :" FontWeight="Bold"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Margin="5 2"
+                           Text="{Binding SelectedSalarie.Nom}"/>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <TextBlock Text="Prénom :" FontWeight="Bold" Width="130"/>
-                        <TextBlock Text="{Binding SelectedItem.Prenom, ElementName=SalariesGrid}"/>
-                    </StackPanel>
+                <TextBlock Grid.Row="1" Grid.Column="0" Margin="0 2" Text="Prénom :" FontWeight="Bold"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5 2"
+                           Text="{Binding SelectedSalarie.Prenom}"/>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <TextBlock Text="Téléphone Fixe :" FontWeight="Bold" Width="130"/>
-                        <TextBlock Text="{Binding SelectedItem.TelephoneFixe, ElementName=SalariesGrid}"/>
-                    </StackPanel>
+                <TextBlock Grid.Row="2" Grid.Column="0" Margin="0 2" Text="Téléphone fixe :" FontWeight="Bold"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5 2"
+                           Text="{Binding SelectedSalarie.TelephoneFixe}"/>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <TextBlock Text="Téléphone Portable :" FontWeight="Bold" Width="130"/>
-                        <TextBlock Text="{Binding SelectedItem.TelephonePortable, ElementName=SalariesGrid}"/>
-                    </StackPanel>
+                <TextBlock Grid.Row="3" Grid.Column="0" Margin="0 2" Text="Téléphone portable :" FontWeight="Bold"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5 2"
+                           Text="{Binding SelectedSalarie.TelephonePortable}"/>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <TextBlock Text="Email :" FontWeight="Bold" Width="130"/>
-                        <TextBlock Text="{Binding SelectedItem.Email, ElementName=SalariesGrid}"/>
-                    </StackPanel>
+                <TextBlock Grid.Row="4" Grid.Column="0" Margin="0 2" Text="Email :" FontWeight="Bold"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Margin="5 2"
+                           Text="{Binding SelectedSalarie.Email}"/>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <TextBlock Text="Service :" FontWeight="Bold" Width="130"/>
-                        <TextBlock Text="{Binding SelectedItem.Service.Nom, ElementName=SalariesGrid}"/>
-                    </StackPanel>
+                <TextBlock Grid.Row="5" Grid.Column="0" Margin="0 2" Text="Service :" FontWeight="Bold"/>
+                <TextBlock Grid.Row="5" Grid.Column="1" Margin="5 2"
+                           Text="{Binding SelectedSalarie.Service.Nom}"/>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <TextBlock Text="Site :" FontWeight="Bold" Width="130"/>
-                        <TextBlock Text="{Binding SelectedItem.Site.Ville, ElementName=SalariesGrid}"/>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-        </Grid>
+                <TextBlock Grid.Row="6" Grid.Column="0" Margin="0 2" Text="Site :" FontWeight="Bold"/>
+                <TextBlock Grid.Row="6" Grid.Column="1" Margin="5 2"
+                           Text="{Binding SelectedSalarie.Site.Ville}"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- =======================  BOUTONS ADMIN ======================== -->
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="3"
+                    Margin="0 10 0 0"
+                    HorizontalAlignment="Left">
+
+            <Button x:Name="BtnAdd"
+                    Content="Ajouter"
+                    Width="100"
+                    Margin="0 0 10 0"
+                    Visibility="Collapsed"
+                    Click="BtnAdd_Click"/>
+
+            <Button x:Name="BtnEdit"
+                    Content="Modifier"
+                    Width="100"
+                    Margin="0 0 10 0"
+                    Visibility="Collapsed"
+                    Click="BtnEdit_Click"/>
+
+            <Button x:Name="BtnDelete"
+                    Content="Supprimer"
+                    Width="100"
+                    Margin="0 0 10 0"
+                    Visibility="Collapsed"
+                    Click="BtnDelete_Click"/>
+
+            <Button x:Name="BtnExitAdmin"
+                    Content="Quitter mode admin"
+                    Width="160"
+                    Click="BtnExitAdmin_Click"
+                    Visibility="Collapsed"/>
+
+        </StackPanel>
+
     </Grid>
 </Window>
