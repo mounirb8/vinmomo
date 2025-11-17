@@ -12,13 +12,9 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- filtres -->
             <RowDefinition Height="*"/>
-            <!-- grille -->
             <RowDefinition Height="Auto"/>
-            <!-- fiche salarié -->
             <RowDefinition Height="Auto"/>
-            <!-- boutons -->
         </Grid.RowDefinitions>
 
         <!-- =======================  FILTRES ======================== -->
@@ -80,32 +76,25 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 2" Text="Nom :" FontWeight="Bold"/>
-                <TextBlock Grid.Row="0" Grid.Column="1" Margin="5 2"
-                           Text="{Binding SelectedSalarie.Nom}"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Margin="5 2" Text="{Binding SelectedSalarie.Nom}"/>
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Margin="0 2" Text="Prénom :" FontWeight="Bold"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5 2"
-                           Text="{Binding SelectedSalarie.Prenom}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5 2" Text="{Binding SelectedSalarie.Prenom}"/>
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Margin="0 2" Text="Téléphone fixe :" FontWeight="Bold"/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5 2"
-                           Text="{Binding SelectedSalarie.TelephoneFixe}"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5 2" Text="{Binding SelectedSalarie.TelephoneFixe}"/>
 
                 <TextBlock Grid.Row="3" Grid.Column="0" Margin="0 2" Text="Téléphone portable :" FontWeight="Bold"/>
-                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5 2"
-                           Text="{Binding SelectedSalarie.TelephonePortable}"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Margin="5 2" Text="{Binding SelectedSalarie.TelephonePortable}"/>
 
                 <TextBlock Grid.Row="4" Grid.Column="0" Margin="0 2" Text="Email :" FontWeight="Bold"/>
-                <TextBlock Grid.Row="4" Grid.Column="1" Margin="5 2"
-                           Text="{Binding SelectedSalarie.Email}"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Margin="5 2" Text="{Binding SelectedSalarie.Email}"/>
 
                 <TextBlock Grid.Row="5" Grid.Column="0" Margin="0 2" Text="Service :" FontWeight="Bold"/>
-                <TextBlock Grid.Row="5" Grid.Column="1" Margin="5 2"
-                           Text="{Binding SelectedSalarie.Service.Nom}"/>
+                <TextBlock Grid.Row="5" Grid.Column="1" Margin="5 2" Text="{Binding SelectedSalarie.Service.Nom}"/>
 
                 <TextBlock Grid.Row="6" Grid.Column="0" Margin="0 2" Text="Site :" FontWeight="Bold"/>
-                <TextBlock Grid.Row="6" Grid.Column="1" Margin="5 2"
-                           Text="{Binding SelectedSalarie.Site.Ville}"/>
+                <TextBlock Grid.Row="6" Grid.Column="1" Margin="5 2" Text="{Binding SelectedSalarie.Site.Ville}"/>
             </Grid>
         </GroupBox>
 
@@ -136,11 +125,26 @@
                     Visibility="Collapsed"
                     Click="BtnDelete_Click"/>
 
+            <!-- nouveaux boutons admin -->
+            <Button x:Name="BtnManageSites"
+                    Content="Gérer sites"
+                    Width="120"
+                    Margin="0 0 10 0"
+                    Visibility="Collapsed"
+                    Click="BtnManageSites_Click"/>
+
+            <Button x:Name="BtnManageServices"
+                    Content="Gérer services"
+                    Width="140"
+                    Margin="0 0 10 0"
+                    Visibility="Collapsed"
+                    Click="BtnManageServices_Click"/>
+
             <Button x:Name="BtnExitAdmin"
                     Content="Quitter mode admin"
                     Width="160"
-                    Click="BtnExitAdmin_Click"
-                    Visibility="Collapsed"/>
+                    Visibility="Collapsed"
+                    Click="BtnExitAdmin_Click"/>
 
         </StackPanel>
 

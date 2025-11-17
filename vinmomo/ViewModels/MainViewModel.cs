@@ -77,6 +77,10 @@ namespace vinmomo.ViewModels
             _ = LoadDataAsync();
         }
 
+        // ======================================================================
+        //   CHARGEMENT GLOBAL (sites + services + salariés)
+        // ======================================================================
+
         public async Task LoadDataAsync()
         {
             try
@@ -108,24 +112,33 @@ namespace vinmomo.ViewModels
             }
         }
 
-        private bool FilterPredicate(object obj)
+        // ======================================================================
+        //   MÉTHODES UTILISÉES APRÈS MODIFICATION DANS LES FENÊTRES ADMIN
+        // ======================================================================
+
+        public async Task LoadSitesAsync()
         {
-            if (obj is not Salarie s) return false;
+            Sites.Clear();
+            var sites = await _siteService.GetSitesAsync();
+            foreach (var s in sites)
+                Sites.Add(s);
 
-            bool matchSearch =
-                string.IsNullOrWhiteSpace(SearchText)
-                || (s.Nom?.ToLower().Contains(SearchText.ToLower()) ?? false)
-                || (s.Prenom?.ToLower().Contains(SearchText.ToLower()) ?? false);
-
-            bool matchSite = SelectedSite == null || s.SiteId == SelectedSite.Id;
-            bool matchService = SelectedService == null || s.ServiceId == SelectedService.Id;
-
-            return matchSearch && matchSite && matchService;
+            SalariesView.Refresh();
         }
 
-        // ==============================
-        //  Méthodes CRUD appelées par MainWindow
-        // ==============================
+        public async Task LoadServicesAsync()
+        {
+            Services.Clear();
+            var services = await _serviceService.GetServicesAsync();
+            foreach (var s in services)
+                Services.Add(s);
+
+            SalariesView.Refresh();
+        }
+
+        // ======================================================================
+        //   CRUD SALARIÉS
+        // ======================================================================
 
         public async Task AddSalarieAsync(Salarie salarie)
         {
@@ -146,6 +159,29 @@ namespace vinmomo.ViewModels
             await _salarieService.DeleteSalarieAsync(SelectedSalarie.Id);
             await LoadDataAsync();
         }
+
+        // ======================================================================
+        //   FILTRES / AFFICHAGE
+        // ======================================================================
+
+        private bool FilterPredicate(object obj)
+        {
+            if (obj is not Salarie s) return false;
+
+            bool matchSearch =
+                string.IsNullOrWhiteSpace(SearchText)
+                || (s.Nom?.ToLower().Contains(SearchText.ToLower()) ?? false)
+                || (s.Prenom?.ToLower().Contains(SearchText.ToLower()) ?? false);
+
+            bool matchSite = SelectedSite == null || s.SiteId == SelectedSite.Id;
+            bool matchService = SelectedService == null || s.ServiceId == SelectedService.Id;
+
+            return matchSearch && matchSite && matchService;
+        }
+
+        // ======================================================================
+        //   INotifyPropertyChanged
+        // ======================================================================
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -1,6 +1,9 @@
 ﻿using System.Windows;
 using vinmomo.Models;
 using vinmomo.ViewModels;
+using vinmomo.Services;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace vinmomo
 {
@@ -14,7 +17,6 @@ namespace vinmomo
 
             DataContext = _vm;
 
-            // Chargement des sites au démarrage
             Loaded += AdminSitesWindow_Loaded;
         }
 
@@ -69,12 +71,26 @@ namespace vinmomo
             if (GridSites.SelectedItem is not Site selected)
                 return;
 
+            // Vérifier si le site est utilisé par un salarié
+            var salaries = await new ApiSalarieService().GetSalariesAsync();
+            bool siteUtilise = salaries.Any(s => s.SiteId == selected.Id);
+
+            if (siteUtilise)
+            {
+                MessageBox.Show(
+                    "Impossible de supprimer ce site car des salariés y sont rattachés.",
+                    "Suppression interdite",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+                return;
+            }
+
+            // Confirmation
             if (MessageBox.Show("Supprimer ce site ?", "Confirmation",
                                 MessageBoxButton.YesNo,
                                 MessageBoxImage.Question) != MessageBoxResult.Yes)
-            {
                 return;
-            }
 
             await _vm.DeleteAsync(selected.Id);
             await _vm.LoadAsync();

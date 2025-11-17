@@ -34,10 +34,13 @@ namespace vinmomo
             BtnEdit.Visibility = _isAdmin ? Visibility.Visible : Visibility.Collapsed;
             BtnDelete.Visibility = _isAdmin ? Visibility.Visible : Visibility.Collapsed;
             BtnExitAdmin.Visibility = _isAdmin ? Visibility.Visible : Visibility.Collapsed;
+
+            BtnManageSites.Visibility = _isAdmin ? Visibility.Visible : Visibility.Collapsed;
+            BtnManageServices.Visibility = _isAdmin ? Visibility.Visible : Visibility.Collapsed;
         }
 
         // ==============================
-        //  COMBINAISON SECRÈTE : CTRL + ALT + A
+        //  COMBINAISON SECRÈTE ADMIN
         // ==============================
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -70,7 +73,7 @@ namespace vinmomo
         }
 
         // ==============================
-        //  CRUD
+        // CRUD SALARIES
         // ==============================
 
         private async void BtnAdd_Click(object sender, RoutedEventArgs e)
@@ -91,7 +94,6 @@ namespace vinmomo
                 return;
             }
 
-            // on clone pour ne pas modifier l'objet tant que l'utilisateur n'a pas validé
             var original = _vm.SelectedSalarie;
             var clone = new Salarie
             {
@@ -130,6 +132,38 @@ namespace vinmomo
             {
                 await _vm.DeleteSelectedAsync();
             }
+        }
+
+        // ==============================
+        //  GESTION DES SITES
+        // ==============================
+        private async void BtnManageSites_Click(object sender, RoutedEventArgs e)
+        {
+            var win = new AdminSitesWindow
+            {
+                Owner = this
+            };
+
+            win.ShowDialog();
+
+            // refresh des ComboBox
+            await _vm.LoadSitesAsync();
+        }
+
+        // ==============================
+        //  GESTION DES SERVICES
+        // ==============================
+        private async void BtnManageServices_Click(object sender, RoutedEventArgs e)
+        {
+            var win = new AdminServicesWindow
+            {
+                Owner = this
+            };
+
+            win.ShowDialog();
+
+            // refresh des ComboBox
+            await _vm.LoadServicesAsync();
         }
     }
 }
